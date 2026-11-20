@@ -1,0 +1,9 @@
+# ChkTeX settings for this repository (used by "make lint").
+#
+# ChkTeX warning 1 ("Command terminated with space") fires when a command
+# without arguments ends a line. The commands below are meant to stand alone
+# on their own lines, so the warning is silenced for them only.
+Silent {
+  \fcdttitleframe \fcdtsectionframe \ProcessOptionsBeamer
+  \insertshortauthor \insertshorttitle \ifPDFTeX \ifLuaTeX \MessageBreak
+}

@@ -1,0 +1,15 @@
+# latexmk settings for the demonstration. Build from this folder with: latexmk
+# SPDX-License-Identifier: CC0-1.0
+
+# Build with LuaLaTeX, which the theme needs for its Figtree typeface.
+$pdf_mode = 4;
+$lualatex = 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error %O %S';
+
+# Make the theme folder visible to TeX. The path is relative to this folder.
+ensure_path('TEXINPUTS', '../theme//');
+
+# Run BibTeX when needed, and let "latexmk -C" remove the .bbl file it makes.
+$bibtex_use = 2;
+
+@default_files = ('demo.tex');
+$clean_ext = 'nav snm vrb';

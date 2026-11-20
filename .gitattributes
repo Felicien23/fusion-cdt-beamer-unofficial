@@ -1,0 +1,5 @@
+# Normalise text files to LF line endings; keep binary assets untouched.
+* text=auto eol=lf
+*.otf binary
+*.pdf binary
+*.png binary

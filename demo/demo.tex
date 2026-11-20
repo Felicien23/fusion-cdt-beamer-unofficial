@@ -1,0 +1,166 @@
+% Demonstration of the unofficial Fusion CDT Beamer theme.
+% All content is illustrative. Build from this folder with: latexmk
+% SPDX-License-Identifier: CC0-1.0
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+\usetheme{FusionCDT}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{positioning}
+
+\title{Presentation title}
+\subtitle{Optional subtitle}
+\author[A. Name]{Author Name}
+\institute{Affiliation}
+\date{\today}
+\hypersetup{pdfsubject={Demonstration of an unofficial, community-maintained
+  Beamer template inspired by the Fusion CDT visual identity}}
+
+\begin{document}
+
+\fcdttitleframe
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Text and lists}
+
+\begin{frame}{Lists}{Frames can have an optional subtitle}
+  \begin{itemize}
+    \item Bullet points use small blue squares.
+      \begin{itemize}
+        \item Second-level points use a magenta dash.
+        \item Inline mathematics: \(\nabla \cdot \mathbf{B} = 0\).
+      \end{itemize}
+    \item Use \alert{alerted text} sparingly for key words.
+  \end{itemize}
+  \begin{enumerate}
+    \item Numbered lists use blue squares.
+    \item They work with overlays and all usual Beamer features.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Blocks}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Block}
+        For definitions and key results.
+      \end{block}
+      \begin{exampleblock}{Example block}
+        For worked examples.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Alert block}
+        For warnings and take-home messages.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Mathematics and figures}
+
+\begin{frame}{Equations}{Standard definitions, shown as an example}
+  The electron plasma frequency and the Debye length are
+  \begin{align}
+    \omega_{pe} &= \sqrt{\frac{n_e e^2}{\varepsilon_0 m_e}},
+    &
+    \lambda_D &= \sqrt{\frac{\varepsilon_0 k_B T_e}{n_e e^2}}.
+  \end{align}
+  Displayed equations are numbered, and inline mathematics such as
+  \(\lambda_D \, \omega_{pe} = \sqrt{k_B T_e / m_e}\) sits in the text.
+\end{frame}
+
+\begin{frame}{Plots}{Illustrative functions, not data}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        width=0.92\textwidth, height=0.62\textheight,
+        xlabel={\(x\)}, ylabel={\(f(x) = \exp\bigl(-x^2 / 2\sigma^2\bigr)\)},
+        axis lines=left, grid=major, grid style={fcdtPaleBlue},
+        legend pos=north east, legend cell align=left,
+        legend style={draw=none, fill=none, font=\footnotesize},
+        mark repeat=6, mark size=1.6pt, ymin=0, ymax=1.05]
+      \addplot+[domain=-3:3, samples=61] {exp(-x^2/(2*0.5^2))};
+      \addplot+[domain=-3:3, samples=61] {exp(-x^2/(2*0.8^2))};
+      \addplot+[domain=-3:3, samples=61] {exp(-x^2/(2*1.1^2))};
+      \addplot+[domain=-3:3, samples=61] {exp(-x^2/(2*1.4^2))};
+      \legend{\(\sigma = 0.5\), \(\sigma = 0.8\), \(\sigma = 1.1\), \(\sigma = 1.4\)}
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Figures}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[
+            box/.style={draw=fcdtBlue, fill=fcdtBlueTint, rounded corners=2pt,
+              minimum width=2cm, minimum height=0.9cm, font=\small},
+            arrow/.style={-latex, thick, fcdtDarkBlue}]
+          \node[box] (a) {Input};
+          \node[box, right=0.6cm of a] (b) {Model};
+          \node[box, right=0.6cm of b] (c) {Output};
+          \draw[arrow] (a) -- (b);
+          \draw[arrow] (b) -- (c);
+        \end{tikzpicture}
+        \caption{An illustrative schematic drawn with TikZ.}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{itemize}
+        \item Figures and captions follow the theme colours.
+        \item Use \texttt{\textbackslash{}includegraphics} for image files.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Tables}{The main theme colours}
+  \centering
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    & Colour name & Hex value & Used for \\
+    \midrule
+    \textcolor{fcdtBlue}{\rule{1.2em}{1.2ex}}     & \texttt{fcdtBlue}     & \texttt{\#277CB3} & Blue slides, footer, block titles \\
+    \textcolor{fcdtDarkBlue}{\rule{1.2em}{1.2ex}} & \texttt{fcdtDarkBlue} & \texttt{\#1D6394} & Frame titles, structure \\
+    \textcolor{fcdtMagenta}{\rule{1.2em}{1.2ex}}  & \texttt{fcdtMagenta}  & \texttt{\#DC2099} & Accents, second plot series \\
+    \textcolor{fcdtLime}{\rule{1.2em}{1.2ex}}     & \texttt{fcdtLime}     & \texttt{\#C5D300} & Accent stripe only \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\section{References}
+
+\begin{frame}{Citations}
+  Citations work as usual. This theme builds on Beamer~\cite{beamer}, the
+  plots use pgfplots~\cite{pgfplots}, and the typeface is
+  Figtree~\cite{figtree}.
+\end{frame}
+
+\begin{frame}{References}
+  \footnotesize
+  \bibliographystyle{plain}
+  \bibliography{references}
+\end{frame}
+
+\begin{frame}{About this template}
+  \footnotesize
+  Unofficial, community-maintained LaTeX Beamer template inspired by the
+  Fusion CDT visual identity. This is not an official Fusion CDT template and
+  is not endorsed by Fusion CDT or its partner institutions.
+
+  \medskip
+  The Fusion CDT logo belongs to its owners and is downloaded separately; it
+  is not covered by the template's licence. The Figtree typeface is used under
+  the SIL Open Font License~1.1.
+\end{frame}
+
+\fcdtclosingframe{Thank you}
+
+\end{document}

@@ -1,0 +1,37 @@
+# LaTeX build intermediates
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+
+# Compiled presentations: publish them as CI artifacts or release assets instead.
+# (Other PDFs, such as vector figures, are not ignored.)
+/starter/*.pdf
+/demo/*.pdf
+
+# The Fusion CDT logo is downloaded by scripts/fetch-logo.sh and is not
+# redistributed in this repository (see THIRD_PARTY_NOTICES.md).
+/theme/logo/fusion-cdt-logo-white.pdf
+
+# Editor backups and local clutter
+*~
+*.bak
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

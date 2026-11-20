@@ -1,0 +1,13 @@
+# latexmk settings for this presentation. Build from this folder with: latexmk
+# SPDX-License-Identifier: CC0-1.0
+
+# Build with LuaLaTeX, which the theme needs for its Figtree typeface.
+$pdf_mode = 4;
+$lualatex = 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error %O %S';
+
+# Make the theme folder visible to TeX. The path is relative to this folder:
+# change it if you move this presentation somewhere else.
+ensure_path('TEXINPUTS', '../theme//');
+
+@default_files = ('main.tex');
+$clean_ext = 'nav snm vrb';
