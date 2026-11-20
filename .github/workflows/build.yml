@@ -3,9 +3,13 @@
 name: Build
 
 on:
+  # Branch pushes only: version tags are built by release.yml, which calls
+  # this workflow, so a tag push does not build twice.
   push:
+    branches: ['**']
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 # Build only: no write access and no personal access tokens are needed.
 permissions:
@@ -36,9 +40,9 @@ jobs:
           chktex --version | head -n 1
           rsvg-convert --version
 
-      # Downloads the logo, builds both PDFs, runs ChkTeX, and fails on theme
-      # warnings (missing logo or font), undefined references, overfull boxes
-      # and BibTeX warnings.
+      # Downloads the logo, builds both PDFs, runs ChkTeX, checks that the
+      # version declarations agree, and fails on theme warnings (missing logo
+      # or font), undefined references, overfull boxes and BibTeX warnings.
       - name: Build and check
         run: make check
 

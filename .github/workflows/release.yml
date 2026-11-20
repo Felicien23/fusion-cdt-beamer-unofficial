@@ -1,0 +1,89 @@
+# Draft a GitHub Release when a version tag such as v1.2.0 or v1.3.0-rc.1 is
+# pushed. The tagged commit is first built and checked by build.yml; if that
+# fails, or the tag does not match the version declarations, nothing is
+# created. The release stays a draft until a maintainer reviews and publishes
+# it. See RELEASING.md.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+
+permissions: {}
+
+# One release run per tag at a time; a second run waits instead of racing.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # The same build, lint and log checks as every push, on the tagged commit.
+    uses: ./.github/workflows/build.yml
+    permissions:
+      contents: read
+
+  draft-release:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write # create or update the draft release and upload its asset
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Check that the tag matches the version declarations
+        id: version
+        run: sh scripts/check-version.sh "$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Download the PDFs built from this commit
+        uses: actions/download-artifact@v7
+        with:
+          name: fusion-cdt-beamer-unofficial-pdfs
+          path: build
+
+      - name: Prepare the release asset and notes
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          mkdir dist
+          cp build/demo/demo.pdf "dist/fusion-cdt-beamer-unofficial-v$VERSION-demo.pdf"
+          sh scripts/release-notes.sh "$VERSION" > release-notes.md
+
+      # Creates a draft release. When a run is re-run, an existing draft is
+      # updated instead; a release that is already published is never changed.
+      - name: Create or update the draft release
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          PRERELEASE: ${{ steps.version.outputs.prerelease }}
+        run: |
+          title="Unofficial Fusion CDT Beamer theme v$VERSION"
+          set -- --title "$title" --notes-file release-notes.md
+          if [ "$PRERELEASE" = true ]; then set -- "$@" --prerelease; fi
+          if is_draft=$(gh release view "$TAG" --json isDraft --jq .isDraft 2>/dev/null); then
+            if [ "$is_draft" != true ]; then
+              echo "::error::Release $TAG is already published; it is left unchanged."
+              exit 1
+            fi
+            gh release upload "$TAG" dist/* --clobber
+            gh release edit "$TAG" "$@"
+            echo "Updated the existing draft release $TAG."
+          else
+            gh release create "$TAG" dist/* --draft --verify-tag "$@"
+            echo "Created the draft release $TAG."
+          fi
+          # The draft must be attached to the pushed tag, not a placeholder.
+          actual=$(gh release view "$TAG" --json tagName --jq .tagName)
+          if [ "$actual" != "$TAG" ]; then
+            echo "::error::The draft release has tag '$actual' instead of '$TAG'."
+            exit 1
+          fi

@@ -35,9 +35,10 @@ template and is not endorsed by Fusion CDT or its partner institutions.
 2. Whether Fusion CDT is content for its logo and visual identity to be used in an
    unofficial template, even with the disclaimer. The disclaimer does not settle any rights
    question.
-3. The preview images in `docs/images/`, and compiled demonstration PDFs (for example the
-   CI build artifacts), show the logo as it appears on the slides. If the rights holder
-   objects, remove those images and stop publishing compiled PDFs.
+3. The preview images in `docs/images/`, and compiled demonstration PDFs (the CI build
+   artifacts and the PDF attached to each GitHub Release), show the logo as it appears on
+   the slides. If the rights holder objects, remove those images and stop publishing
+   compiled PDFs.
 
 ## Fusion CDT name, colours and layout
 

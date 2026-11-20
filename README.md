@@ -23,8 +23,8 @@ copy and a demonstration of every feature.
 - **Lists, blocks, captions and the bibliography** are styled in the website palette.
 - **Plots:** a `fusioncdt` pgfplots cycle list in the same colours, applied automatically.
 - **Options** to skip the section slides or use the website's cream background.
-- A **starter** presentation, a **demonstration**, a `make check` target and a GitHub Actions
-  workflow.
+- A **starter** presentation, a **demonstration**, a `make check` target, and GitHub Actions
+  workflows that build every push and draft each release.
 
 The colours come from the Fusion CDT website. [docs/branding.md](docs/branding.md) records
 every value and its source.
@@ -49,15 +49,18 @@ MiKTeX and Overleaf have not been tested.
 
 ## Quick start
 
-Clone the repository or download it as a ZIP, then build both example presentations
-from its top folder:
+Download the latest release: on the repository's GitHub page, open **Releases** and
+choose **Source code (zip)** under *Assets*. Alternatively, clone the repository. Then
+build both example presentations from the top folder:
 
 ```sh
-cd fusion-cdt-beamer-unofficial
+cd fusion-cdt-beamer-unofficial    # for a release download, the name ends in the version
 make
 ```
 
 The first run downloads the logo. The results are `starter/main.pdf` and `demo/demo.pdf`.
+To see the slides before installing anything, download the release's
+`...-demo.pdf` file instead.
 
 ## Start your own presentation
 
@@ -140,7 +143,7 @@ Without the file, presentations still compile, with a warning and no logo.
 
 ```sh
 make demo     # or: cd demo && latexmk
-make check    # build both presentations, run ChkTeX and check the logs, as CI does
+make check    # build both, run ChkTeX, check the version declarations and the logs, as CI does
 make clean    # remove generated files; keeps sources, fonts and the downloaded logo
 ```
 
@@ -181,12 +184,16 @@ fusion-cdt-beamer-unofficial/
 ├── demo/                       demonstration of all features (demo.tex, references.bib, latexmkrc)
 ├── scripts/
 │   ├── fetch-logo.sh           downloads and converts the logo
-│   └── check-logs.sh           fails on warnings that do not stop the build
+│   ├── check-logs.sh           fails on warnings that do not stop the build
+│   ├── check-version.sh        checks that the version declarations agree
+│   └── release-notes.sh        writes the notes for a GitHub Release
 ├── docs/
 │   ├── branding.md             colour values and their sources
 │   └── images/                 preview images for this README
-├── .github/                    CI workflow, issue and pull-request templates
+├── .github/                    build and release workflows, issue and pull-request templates
 ├── Makefile
+├── CHANGELOG.md                changes in each release
+├── RELEASING.md                how maintainers make a release
 ├── LICENSE                     MIT, for the theme code and documentation
 └── THIRD_PARTY_NOTICES.md      logo, typeface and branding
 ```
@@ -203,6 +210,22 @@ fusion-cdt-beamer-unofficial/
 | Citations show as **?** | Run `latexmk`, which runs BibTeX as often as needed, and not `lualatex` alone. |
 | The first build is slow | LuaLaTeX builds its font cache on the first run; later runs are faster. |
 | No `make` (for example on Windows) | Run `latexmk` inside `starter/`, `demo/` or your own folder, and get the logo by hand. |
+
+## Versions and releases
+
+Releases are numbered `MAJOR.MINOR.PATCH` ([Semantic Versioning](https://semver.org/)) and
+tagged `vMAJOR.MINOR.PATCH`. Within one major version, commands, options, colour names,
+required files and the content area of the slides stay compatible. Minor versions add
+features, and patch versions only fix problems. [CHANGELOG.md](CHANGELOG.md) lists what
+changed in each release.
+
+To find out which version a presentation used, look for this line in its `.log` file:
+
+```text
+Package: beamerthemeFusionCDT YYYY/MM/DD vX.Y.Z Unofficial Fusion CDT Beamer theme
+```
+
+Maintainers: [RELEASING.md](RELEASING.md) describes how releases are made.
 
 ## Contributing and reporting bugs
 

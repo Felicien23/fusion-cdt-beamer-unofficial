@@ -1,13 +1,13 @@
 # Build the starter and the demonstration presentations.
 #   make          download the logo if needed, then build both PDFs
-#   make check    build, lint and check the logs (what CI runs)
+#   make check    build, lint, check versions and logs (what CI runs)
 #   make clean    remove generated files (keeps sources, fonts and the logo)
 # SPDX-License-Identifier: MIT
 
 LATEXMK ?= latexmk
 LOGO := theme/logo/fusion-cdt-logo-white.pdf
 
-.PHONY: all starter demo logo lint check clean
+.PHONY: all starter demo logo lint check-version check clean
 
 all: starter demo
 
@@ -25,7 +25,10 @@ demo: $(LOGO)
 lint:
 	chktex -q -l .chktexrc theme/beamerthemeFusionCDT.sty starter/main.tex demo/demo.tex
 
-check: all lint
+check-version:
+	sh scripts/check-version.sh $(TAG) > /dev/null
+
+check: all lint check-version
 	sh scripts/check-logs.sh starter/main.log demo/demo.log
 
 clean:

@@ -54,18 +54,12 @@ pdftoppm -png -singlefile -f 8 -l 8 -scale-to-x 960 -scale-to-y -1 demo/demo.pdf
 
 Page 8 is the plot slide. If you add or remove slides before it, adjust the number.
 
-## Releases
+## Changelog and releases
 
-1. Update the version and date in the `\ProvidesPackage` line of
-   `theme/beamerthemeFusionCDT.sty`.
-2. Tag the commit, for example `v1.0.0`, and create a GitHub release.
-3. Attach `demo/demo.pdf` from the CI run for that commit, as long as the logo question in
-   [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) allows it.
-4. Start every release description with the notice:
-
-   > Unofficial, community-maintained LaTeX Beamer template inspired by the Fusion CDT
-   > visual identity. This is not an official Fusion CDT template and is not endorsed by
-   > Fusion CDT or its partner institutions.
+Add a line under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md) for every change users
+will notice. Do not change the version number in a pull request: maintainers set it when
+they make a release, as described in [RELEASING.md](RELEASING.md). That file also explains
+which changes count as breaking.
 
 By contributing, you agree that your contribution is licensed under the MIT licence, or
 CC0 1.0 for files in `starter/` and `demo/`, as described in the README.
